@@ -102,6 +102,11 @@ func mmap(db *DB, sz int) error {
 		if err := db.file.Truncate(int64(sz)); err != nil {
 			return fmt.Errorf("truncate: %s", err)
 		}
+	} else {
+		// Fix "CreateFileMapping: Not enough storage is available to process this command." error when openning a db created under linux
+		if sz > db.filesz {
+			sz = db.filesz
+		}
 	}
 
 	// Open a file mapping handle.
