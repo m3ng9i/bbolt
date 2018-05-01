@@ -490,7 +490,8 @@ func (db *DB) close() error {
 	// Close file handles.
 	if db.file != nil {
 		// No need to unlock read-only file.
-		if !db.readOnly {
+		// The condition "runtime.GOOS == "windows" is added to fix ".lock" file not deleted problem.
+		if !db.readOnly || runtime.GOOS == "windows" {
 			// Unlock the file.
 			if err := funlock(db); err != nil {
 				log.Printf("bolt.Close(): funlock error: %s", err)
