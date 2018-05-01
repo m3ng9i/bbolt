@@ -155,6 +155,16 @@ func (db *DB) String() string {
 	return fmt.Sprintf("DB<%q>", db.path)
 }
 
+// Get database file size
+func (db *DB) FileSize() (sz int64, err error) {
+	info, err := db.file.Stat()
+	if err != nil {
+		return
+	}
+	sz = info.Size()
+	return
+}
+
 // Open creates and opens a database at the given path.
 // If the file does not exist then it will be created automatically.
 // Passing in nil options will cause Bolt to open the database with the default options.
