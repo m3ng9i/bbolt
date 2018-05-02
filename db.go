@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"hash/fnv"
-	"log"
 	"os"
 	"runtime"
 	"sort"
@@ -494,7 +493,7 @@ func (db *DB) close() error {
 		if !db.readOnly || runtime.GOOS == "windows" {
 			// Unlock the file.
 			if err := funlock(db); err != nil {
-				log.Printf("bolt.Close(): funlock error: %s", err)
+		                return fmt.Errorf("bolt.Close(): funlock error: %s", err)
 			}
 		}
 
